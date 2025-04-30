@@ -68,6 +68,7 @@ export const DocumentList: React.FC = () => {
                             <TableCell>Имя файла</TableCell>
                             <TableCell>Дата загрузки</TableCell>
                             <TableCell>Статус</TableCell>
+                            <TableCell>Действия</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
