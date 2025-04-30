@@ -35,8 +35,8 @@ export const DocumentForm: React.FC = () => {
             setDocuments(response.data);
             setShowTable(true);
         } catch (err) {
-            setError('Ошибка при загрузке документов');
-            console.error('Ошибка при загрузке документов:', err);
+            setError('Ошибка при загрузке файлов');
+            console.error('Ошибка при загрузке файлов:', err);
         } finally {
             setLoading(false);
         }
@@ -79,7 +79,7 @@ export const DocumentForm: React.FC = () => {
                     fontSize: '1.1rem',
                 }}
             >
-                Загрузить документы
+                Загрузить файлы
             </Button>
 
             {loading && (

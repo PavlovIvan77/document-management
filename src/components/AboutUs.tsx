@@ -28,7 +28,7 @@ const teamMembers: TeamMember[] = [
         id: 2,
         name: 'Медведев Никита',
         role: 'ML разработчик, Тимлид',
-        description: 'Разработали  пайплайн для распознавания текста в банковских документах. Для устранения перекрытий между bbox используется NMS (non-maximum suppression) на основе confidence от CLIP',
+        description: 'Разработали  пайплайн для распознавания текста в банковских файлах. Для устранения перекрытий между bbox используется NMS (non-maximum suppression) на основе confidence от CLIP',
         imagePath: '/images/member2.jpg',
     },
     {
@@ -42,7 +42,7 @@ const teamMembers: TeamMember[] = [
         id: 4,
         name: 'Щапов Андрей',
         role: 'Аналитик',
-        description: 'Автоматизировал приведение документов к единому формату',
+        description: 'Автоматизировал приведение файлов к единому формату',
         imagePath: '/images/member4.jpg',
     },
 ];

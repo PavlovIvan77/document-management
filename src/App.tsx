@@ -4,7 +4,6 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, AppBar, Toolbar, Typography, Container, Button } from '@mui/material';
 import { theme } from './theme';
-import { DocumentForm } from './components/DocumentForm';
 import { DocumentList } from './components/DocumentList';
 import { DocumentUpload } from './components/DocumentUpload';
 import { ContactForm } from './components/ContactForm';
@@ -154,7 +153,7 @@ function App() {
                                     fontWeight: 'bold',
                                 }}
                             >
-                                Система управления документами
+                                Система управления файлами
                             </Typography>
                             <Navigation />
                         </Toolbar>
@@ -194,7 +193,7 @@ function App() {
                                                     textShadow: '0 2px 4px rgba(0,0,0,0.1)',
                                                 }}
                                             >
-                                                Документы
+                                                Файлы
                                             </Typography>
                                             <DocumentUpload />
                                             <Box sx={{ mt: 4 }}>

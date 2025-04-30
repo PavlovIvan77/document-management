@@ -130,11 +130,11 @@ export const DocumentList: React.FC = () => {
         <Box>
             <DocumentTable
                 documents={uploadedDocuments}
-                title="Загруженные документы"
+                title="Загруженные файлы"
             />
             <DocumentTable
                 documents={processedDocuments}
-                title="Обработанные документы"
+                title="Обработанные файлы"
             />
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                 <Button
@@ -146,7 +146,7 @@ export const DocumentList: React.FC = () => {
                         },
                     }}
                 >
-                    Загрузить документы
+                    Загрузить файлы
                 </Button>
             </Box>
         </Box>

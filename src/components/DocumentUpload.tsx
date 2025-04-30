@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
     Box,
     Button,
@@ -22,6 +22,7 @@ export const DocumentUpload: React.FC = () => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState<number>(0);
+    const [isDragging, setIsDragging] = useState(false);
     const [snackbar, setSnackbar] = useState<{
         open: boolean;
         message: string;
@@ -72,6 +73,26 @@ export const DocumentUpload: React.FC = () => {
         }
     };
 
+    const handleDragOver = useCallback((event: React.DragEvent) => {
+        event.preventDefault();
+        setIsDragging(true);
+    }, []);
+
+    const handleDragLeave = useCallback((event: React.DragEvent) => {
+        event.preventDefault();
+        setIsDragging(false);
+    }, []);
+
+    const handleDrop = useCallback((event: React.DragEvent) => {
+        event.preventDefault();
+        setIsDragging(false);
+
+        if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+            const file = event.dataTransfer.files[0];
+            setSelectedFile(file);
+        }
+    }, []);
+
     const formatFileSize = (bytes: number) => {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -95,15 +116,31 @@ export const DocumentUpload: React.FC = () => {
                 style={{ display: 'none' }}
                 ref={fileInputRef}
             />
-            <Button
-                variant="contained"
-                startIcon={<CloudUploadIcon />}
+            <Paper
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                sx={{
+                    p: 4,
+                    border: isDragging ? '2px dashed #2196F3' : '2px dashed #ccc',
+                    backgroundColor: isDragging ? 'rgba(33, 150, 243, 0.1)' : 'transparent',
+                    transition: 'all 0.3s ease',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 2,
+                    cursor: 'pointer',
+                }}
                 onClick={() => fileInputRef.current?.click()}
-                sx={{ width: '100%' }}
-                disabled={isUploading || !!selectedFile}
             >
-                Выбрать файл
-            </Button>
+                <CloudUploadIcon sx={{ fontSize: 48, color: isDragging ? '#2196F3' : '#ccc' }} />
+                <Typography variant="h6" sx={{ color: isDragging ? '#2196F3' : '#666' }}>
+                    {isDragging ? 'Отпустите файл здесь' : 'Перетащите файл сюда или нажмите для выбора'}
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#666' }}>
+                </Typography>
+            </Paper>
 
             {selectedFile && (
                 <Paper
@@ -116,35 +153,33 @@ export const DocumentUpload: React.FC = () => {
                     <Typography variant="h6" sx={{ mb: 2, color: '#2196F3' }}>
                         Выбранный файл:
                     </Typography>
-                    <List>
-                        <ListItem
-                            sx={{
-                                border: '1px solid rgba(33, 150, 243, 0.2)',
-                                borderRadius: '8px',
-                                '&:hover': {
-                                    background: 'rgba(33, 150, 243, 0.05)',
-                                },
-                            }}
+                    <ListItem
+                        sx={{
+                            border: '1px solid rgba(33, 150, 243, 0.2)',
+                            borderRadius: '8px',
+                            '&:hover': {
+                                background: 'rgba(33, 150, 243, 0.05)',
+                            },
+                        }}
+                    >
+                        <ListItemIcon>
+                            <DescriptionIcon color="primary" />
+                        </ListItemIcon>
+                        <ListItemText
+                            primary={selectedFile.name}
+                            secondary={`Размер: ${formatFileSize(selectedFile.size)}`}
+                        />
+                        <IconButton
+                            edge="end"
+                            aria-label="delete"
+                            onClick={handleRemoveFile}
+                            sx={{ color: '#f44336' }}
+                            disabled={isUploading}
                         >
-                            <ListItemIcon>
-                                <DescriptionIcon color="primary" />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={selectedFile.name}
-                                secondary={`Размер: ${formatFileSize(selectedFile.size)}`}
-                            />
-                            <IconButton
-                                edge="end"
-                                aria-label="delete"
-                                onClick={handleRemoveFile}
-                                sx={{ color: '#f44336' }}
-                                disabled={isUploading}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </ListItem>
-                    </List>
-                    <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </ListItem>
+                    <Box sx={{ mt: 2 }}>
                         {isUploading && (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                                 <CircularProgress variant="determinate" value={uploadProgress} />
